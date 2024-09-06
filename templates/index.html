@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='templates.css') }}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+</head>
+
+<body class="body">
+    <div class="homeIndex">
+        <img src="{{url_for('static', filename='')}}" alt="My Image" class="foto_index" />
+        <!--<p class="slogan" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color:cornflowerblue">Of course, Innovation </p>-->
+        <div class="acccesso">
+            <p data-target="pop1" class="link">LOGIN</p>
+            <div id="pop1" class="popup">
+                <div class="log">
+                    <p>{{msg}}</p>
+                    <form action="{{ url_for('accesso') }}" method="post" class="login">
+                        <img src="#" class="little" /><br>
+                        <label for="login1" class="etichette"><b>nome utente</b><input type="text" name="user" class="credenziali1" maxlength="255"></label><br>
+                        <label for="login2" class="etichette"><b>Password</b><input type="password" name="pass" class="credenziali1" maxlength="255"></label><br>
+                        <button type="submit">Login</button><br />
+                    </form>
+                    <button class="chiudi_div" data-target="pop1">Chiudi</button>
+                </div>
+            </div>
+
+            <p data-target="pop2" class="link">REGISTRAZIONE</p>
+            <div id="pop2" class="popup">
+                <div class="log">
+                    <p>{{msg}}</p>
+                    <form action="{{ url_for('crea_utente') }}" method="post" class="login">
+                        <div class="colore">
+                            <label>Nome</label>
+                            <input type="text" name="nome" required>
+                        </div>
+
+                        <div class="colore">
+                            <label>Cognome</label>
+                            <input type="text" name="cognome" required>
+                        </div>
+
+
+                        <div class="colore">
+                            <label>Password</label>
+                            <input type="password" name="pass" required>
+                        </div>
+
+                        <div class="colore">
+                            <label>Mail</label>
+                            <input type="email" name="mail" required>
+                        </div>
+
+                        <div class="colore">
+                            <label>Azienda'</label>
+                            <input type="text" name="azienda" required>
+                        </div>
+
+
+                        <div class="colore">
+                            <label>Reparto'</label>
+                            <input type="text" name="reparto" required>
+                        </div>
+
+
+                        <div>
+                            <button class="bottone_generic" type="submit">Avvia<br>registrazione</button>
+                            <button class="bottone_generic" type="reset">Cancella</button>
+                        </div>
+                    </form>
+                    <button class="chiudi_div" data-target="pop2">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        ToDo: v. 0
+    </footer>
+</body>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='templates.css') }}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+</head>
+
+<body class="body">
+    <div class="pannello1">
+        <div class="inserisciTask">
+            <form action="{{'/nuovoTask'}}" method="post">
+                <div class="elementiTask">
+                    <label>Titolo</label>
+                    <input type="text" name="titolo" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>priorità</label>
+                    <input type="text" name="priorita" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>etichetta</label>
+                    <input type="text" name="etichetta" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>luogo</label>
+                    <input type="text" name="luogo" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>data</label>
+                    <input type="text" name="data" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>Ora</label>
+                    <input type="text" name="ora" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>Descrizione</label>
+                    <input type="text" name="descrizione" required>
+                </div>
+            </form>
+        </div>
+
+        <div class="task">
+            {% for ta in task %}
+                <p>id:{{task[0]}}</p>
+                <p>titolo:{{task[1]}}</p>
+                <p>descrizione:{{task[2]}}</p>
+                <p>priorità:{{task[3]}}</p>
+                <p>inserito da:{{task[4]}}</p>
+                <p>stato:{{task[5]}}</p>
+                <p>luogo:{{task[6]}}</p>
+                <p>data:{{task[7]}}</p>
+                <p>ora:{{task[8]}}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
