@@ -19,12 +19,14 @@ CREATE TABLE task
 	titolo  TEXT,
 	descrizione TEXT,
 	priorità INTEGER,
-	inseritoDa INTEGER,
-	etichetta INTEGER,
+	id_utente INTEGER,
+	assegnatoA INTEGER,
+	stato INTEGER,
 	luogo TEXT,
 	data DATE,
 	ora TIME,
-	FOREIGN KEY (inseritoDa) REFERENCES users (id_utente)
+	FOREIGN KEY (id_utente) REFERENCES users (id_utente),
+	FOREIGN KEY (assegnatoA) REFERENCES users (id_utente)
 
 );
 

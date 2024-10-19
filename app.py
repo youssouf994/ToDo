@@ -1,6 +1,8 @@
+#from crypt import methods
+from dataclasses import dataclass
 from flask import Flask, render_template, request, session, redirect, url_for
-import bcrypt
 import sqlite3
+import datetime
 from functools import wraps
 
 from algoritmi.queryDb import qDb
@@ -41,13 +43,13 @@ def crea_utente():
         db=qDb.db()
        
         check=qUsers.confrontoMail(db, nome, cognome, azienda, mail, passw, reparto)
-
+        db.close()
 
         if check==True:
             return render_template('index.html')
         
-        else:
-            return render_template('registrazione.html')
+        else:           
+            return render_template('errore.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -59,6 +61,7 @@ def accesso():
         
         db=qDb.db()
         check=qUsers.login(db, utente, passwd)    
+        db.close()
         
         if check==False:
             return render_template('errore.html')
@@ -67,22 +70,73 @@ def accesso():
             session['userId']=check
             return redirect(url_for('home'))
         
-
+        
 
 @app.route('/home', methods=['POST', 'GET'])
 def home():
     
     return render_template('home.html')
 
-@app.route('/visualizzaTask', methods=['POST', 'GET'])
-def visualizzaTask():
-    
+@app.route('/visualizzaTask/<stato>')
+def visualizzaTask(stato):
     db=qDb.db()
     
+    if stato == 'da_fare':
+        task=qTask.visualizzaTutteDaCompletare(db, session['userId'])
+        
+    elif stato == 'in_sospeso':
+        task=qTask.visualizzaTutteSospese(db, session['userId'])
+        
+    elif stato == 'chiuse':
+        task=qTask.visualizzaTutteCompletate(db, session['userId'])
+        
+    elif stato == 'da_fareB':
+        task=qTask.visualizzaTutteDaCompletareAssegnatemi(db, session['userId'])
+        
+    elif stato == 'in_sospesoB':
+        task=qTask.visualizzaTutteSospeseAssegnatemi(db, session['userId'])
+        
+    elif stato == 'chiuseB':
+        task=qTask.visualizzaTutteCompletateAssegnatemi(db, session['userId'])
+    
+
+    db.close()
+    return render_template('vis.html', task=task, stato=stato)
+
+@app.route('/aggiungi', methods=['POST', 'GET'])
+def aggiunta():
+    db=qDb.db()
+    
+    utenti=qUsers.recuperaUtenti(db)
+    
+    db.close()
+    
+    return render_template("aggiungiTask.html", utenti=utenti)
+
+@app.route('/aggiungiTasks', methods=['POST', 'GET'])
+def nuovoTask():
+    if request.method == 'POST':    
+        db=qDb.db()
+    
+        now = datetime.datetime.now()
+    
+        titolo=request.form['titolo']
+        descrizione=request.form['descrizione']
+        priorità=request.form['priorita']
+        assegnatoA=request.form['assegnatoA']
+        stato=request.form['stato']
+        luogo=request.form['luogo']
+        data=now.strftime('%d-%m-%Y')
+        ora=now.strftime('%H:%M:%S')
+      
+    qTask.aggiungiTask(db, titolo, descrizione, priorità, session['userId'], assegnatoA, stato, luogo, data, ora)
     rep=qTask.recuperaRepartoUtente(db, session['userId'])
     task=qTask.visualizzaTuttePerReparto(db, rep)
+    utenti=qUsers.recuperaUtenti(db)
     
-    return render_template("vis.html", task=task)
+    db.close()
+    
+    return render_template("aggiungiTask.html", task=task, utenti=utenti)
 
 
 if __name__ == "__main__":

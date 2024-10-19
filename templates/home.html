@@ -7,11 +7,50 @@
 </head>
 
 <body class="body">
+    <div class="sidebar">
+        <a href="{{ (url_for('aggiunta')) }}">Aggiungi Task</a>
+
+        <div class="side1">
+            <h4 class="text-center">Gestione Task da lavorare</h4>
+            <a href="{{ url_for('visualizzaTask', stato='da_fareB') }}">Da Fare</a>
+            <a href="{{ url_for('visualizzaTask', stato='in_sospesoB') }}">In Sospeso</a>
+            <a href="{{ url_for('visualizzaTask', stato='chiuseB') }}">Chiuse</a>
+        </div>
+
+        <div class="side2">
+            <h4 class="text-center">Gestione Task assegnate da me</h4>
+            <a href="{{ url_for('visualizzaTask', stato='da_fare') }}">Da Fare</a>
+            <a href="{{ url_for('visualizzaTask', stato='in_sospeso') }}">In Sospeso</a>
+            <a href="{{ url_for('visualizzaTask', stato='chiuse') }}">Chiuse</a>
+        </div>
+
+
+    </div>
+
+    <!-- Contenuto principale -->
+    <div class="main-content">
+        <h2>Benvenuto nella Gestione Task</h2>
+        <p>Seleziona una delle opzioni dal menu per gestire i tuoi task.</p>
+    </div>
+
     <div class="pannello1">
-        <div class="funzioniPrincipali">
-            <div class="task">
-                <a href="{{(url_for('visualizzaTask'))}}">Task</a>
-            </div>
+        <div class="task">
+            {% for ta in task %}
+            <p>id:{{ta[0]}}</p>
+            <p>titolo:{{ta[1]}}</p>
+            <p>descrizione:{{ta[2]}}</p>
+            <p>priorit :{{ta[3]}}</p>
+            <p>inserito da:{{ta[4]}} {{ta[5]}}</p>
+            <p>assegnato a:{{ta[7]}} {{ta[8]}}</p>
+            <p>stato:{{ta[12]}}</p>
+            <p>luogo:{{ta[13]}}</p>
+            <p>data:{{ta[10]}}</p>
+            <p>ora:{{ta[11]}}</p>
+            {% endfor %}
         </div>
     </div>
+
+    <!-- Bootstrap JS e dipendenze -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>

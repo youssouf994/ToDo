@@ -40,3 +40,11 @@ class qUsers:
         else:
             trovato_nome=None
             return False
+        
+    def recuperaUtenti(db):
+        cursore=db.cursor()
+        
+        cursore.execute('SELECT * FROM users')
+        utenti=cursore.fetchall()
+        
+        return utenti

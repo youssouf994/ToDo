@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='templates.css') }}" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+</head>
+
+<body class="body">
+    <div class="pannello1">
+        <div class="inserisciTask">
+            <form action="{{(url_for('nuovoTask'))}}" method="post">
+                <div class="elementiTask">
+                    <label>Titolo</label>
+                    <input type="text" name="titolo" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>priorità</label>
+                    <input type="text" name="priorita" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>stato</label>
+                    <input type="text" name="stato" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>luogo</label>
+                    <input type="text" name="luogo" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label for="respCentro">utente da incaricare </label>
+                    <select name="assegnatoA" id="re" style="font-size: 16px; color: black; background-color: white; width:66%;">
+                        {% for ute in utenti %}
+                        <option value="{{ute[0]  }}" style="color:black">{{ute[2]  }} {{ute[6]  }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="elementiTask">
+                    <label>Descrizione</label>
+                    <input type="text" name="descrizione" required>
+                </div>
+
+                <input type="submit" value="inoltra task" />
+            </form>
+        </div>
+    </div>
+</body>

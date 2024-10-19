@@ -8,56 +8,18 @@
 
 <body class="body">
     <div class="pannello1">
-        <div class="inserisciTask">
-            <form action="{{'/nuovoTask'}}" method="post">
-                <div class="elementiTask">
-                    <label>Titolo</label>
-                    <input type="text" name="titolo" required>
-                </div>
-
-                <div class="elementiTask">
-                    <label>priorit‡</label>
-                    <input type="text" name="priorita" required>
-                </div>
-
-                <div class="elementiTask">
-                    <label>etichetta</label>
-                    <input type="text" name="etichetta" required>
-                </div>
-
-                <div class="elementiTask">
-                    <label>luogo</label>
-                    <input type="text" name="luogo" required>
-                </div>
-
-                <div class="elementiTask">
-                    <label>data</label>
-                    <input type="text" name="data" required>
-                </div>
-
-                <div class="elementiTask">
-                    <label>Ora</label>
-                    <input type="text" name="ora" required>
-                </div>
-
-                <div class="elementiTask">
-                    <label>Descrizione</label>
-                    <input type="text" name="descrizione" required>
-                </div>
-            </form>
-        </div>
-
         <div class="task">
             {% for ta in task %}
-                <p>id:{{task[0]}}</p>
-                <p>titolo:{{task[1]}}</p>
-                <p>descrizione:{{task[2]}}</p>
-                <p>priorit‡:{{task[3]}}</p>
-                <p>inserito da:{{task[4]}}</p>
-                <p>stato:{{task[5]}}</p>
-                <p>luogo:{{task[6]}}</p>
-                <p>data:{{task[7]}}</p>
-                <p>ora:{{task[8]}}</p>
+                <p>id:{{ta[0]}}</p>
+                <p>titolo:{{ta[1]}}</p>
+                <p>descrizione:{{ta[2]}}</p>
+                <p>priorit√†:{{ta[3]}}</p>
+                <p>inserito da:{{ta[4]}} {{ta[5]}}</p>
+                <p>assegnato a:{{ta[7]}} {{ta[8]}}</p>
+                <p>stato:{{ta[12]}}</p>
+                <p>luogo:{{ta[13]}}</p>
+                <p>data:{{ta[10]}}</p>
+                <p>ora:{{ta[11]}}</p>
             {% endfor %}
         </div>
     </div>

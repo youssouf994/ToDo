@@ -2,3 +2,35 @@
 {
     display:none;
 }
+
+/* Stile per la barra laterale */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f8f9fa;
+    padding-top: 20px;
+}
+
+    /* Stile per i link nella barra laterale */
+    .sidebar a {
+        padding: 15px 20px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #333;
+        display: block;
+    }
+
+        /* Cambio colore al passaggio del mouse */
+        .sidebar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+/* Stile per il contenuto principale */
+.main-content {
+    margin-left: 260px; /* Distanza della sidebar */
+    padding: 20px;
+}
