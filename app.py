@@ -70,7 +70,13 @@ def accesso():
             session['userId']=check
             return redirect(url_for('home'))
         
-        
+@app.route('/home', methods=['POST', 'GET'])
+def vis():
+    db=qDb.db()
+    utenti=qUsers.recuperaUtenti(db)
+    db.close()
+    
+    return render_template('vis.html', utenti=utenti)        
 
 @app.route('/home', methods=['POST', 'GET'])
 def home():
@@ -143,23 +149,23 @@ def nuovoTask():
     
     return render_template("home.html", task=task, utenti=utenti)
 
-@app.route('/modifica_task/<int:id>', methods=['GET', 'POST'])
-def modifica_task(ida):
-    db = qDb.db()  # Inizializza la connessione al database
-    nuovo = []  # Inizializza una lista vuota per i nuovi valori
+@app.route('/modifica_task/<int:ida>', methods=['GET', 'POST'])
+def modificaTask(ida):
+    db = qDb.db() 
+    nuovo = []  
+    colonne=[]
+    colonne = 'titolo, descrizione, priorità, assegnatoA, luogo'
     
     if request.method == 'POST':
-        # Recupera i dati inviati tramite POST
+       
         nuovo.append(request.form['titolo'])
         nuovo.append(request.form['descrizione'])
         nuovo.append(request.form['priorita'])
+        nuovo.append(request.form['assegnatoA'])
+        nuovo.append(request.form['luogo'])
         
-        # Definisci tabella e colonna (presumo tu abbia i nomi in variabili o li passi qui)
-        tabella = 'task'  # La tabella da aggiornare, ad esempio 'tasks'
-        colonna = 'titolo, descrizione, priorità'  # Le colonne che vuoi aggiornare
-
-        # Esegui la query di aggiornamento
-        qTask.modificaCampo(db, session['userId'], nuovo, tabella, colonna)
+        #qTask.recuperaId(db, session['userId'], nuovo[0], tabella, colonna)
+        qTask.modificaCampo(db, session['userId'], nuovo, 'task', colonne)
         
         db.close()  # Chiudi la connessione al database
         return redirect(url_for(''))  # Redireziona dopo l'aggiornamento
@@ -171,6 +177,14 @@ def modifica_task(ida):
     db.close()  # Chiudi la connessione al database
     
     return render_template('modifica_task.html', task=task)
+
+@app.route('/eliminaTask/<int:idR>', methods=['POST', 'GET'])
+def cancellaTask(idR):
+    db=qDb.db()
+    
+    qTask.eliminaRiga(db, 'task', idR)
+    
+    return redirect(url_for('vis'))
 
 if __name__ == "__main__":
     # Run the app server on localhost:4449

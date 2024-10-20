@@ -81,7 +81,16 @@ class qTask:
         cursore.execute(f"SELECT * FROM {tabella} WHERE id_utente=?", (idU,))
         idRep=cursore.fetchone()
          
-        return idRep[6]   
+        return idRep[6]
+    
+    def recuperaId(db, idU, dato, tabella, colonna):
+        cursore=db.cursor()
+         
+         
+        cursore.execute(f"SELECT * FROM {tabella} WHERE {colonna}=? AND {dato}=?", (tabella, colonna, dato,))
+        idTrovato=cursore.fetchone()
+         
+        return idTrovato[0]
     
     def aggiungiTask(db, titolo, descrizione, priorità, inseritoDa, assegnatoA, stato, luogo, data, ora):
         cursore=db.cursor()
@@ -92,19 +101,45 @@ class qTask:
         db.commit()
     
 
-    def modificaCampo(db, idUser, nuovo, tabella, colonna):
-       for colonna, nuovo in zip(colonna, nuovo):
-        # Costruire la query di aggiornamento
-        query = f"UPDATE {tabella} SET {colonna} = ? WHERE id_utente = ?;" 
-        
-        # Debugging
-        print(f"Eseguendo query: {query} con valori: {(nuovo, idUser)}")
-        
-        # Eseguire l'aggiornamento con parametri
-        db.execute(query, (nuovo, idUser,))
+    def modificaCampo(db, idUser, nuovi_valori, tabella, colonne):
+        for colonna, nuovo_valore in zip(colonne, nuovi_valori):
+            # Ottieni il valore corrente dal database per confronto
+            query_select = f"SELECT {colonna} FROM {tabella} WHERE id_utente = ?;"
+            risultato = db.execute(query_select, (idUser,)).fetchone()
+
+            if risultato is not None:
+                valore_corrente = risultato[0]
+            
+                # Aggiorna solo se il nuovo valore è diverso dal valore corrente
+                if nuovo_valore != valore_corrente:
+                    query_update = f"UPDATE {tabella} SET {colonna} = ? WHERE id_utente = ?;"
+                    db.execute(query_update, (nuovo_valore, idUser))
+                    print(f"Eseguendo query: {query_update} con valori: ({nuovo_valore}, {idUser})")
     
-    # Commit della transazione dopo tutti gli aggiornamenti
+    # Conferma le modifiche una volta che tutte le operazioni sono eseguite
         db.commit()
-        print(f"Tutti i campi aggiornati correttamente in {tabella}.")
+
+       
+    def eliminaRiga(db, tabella, idRiga):
+    # Determina il nome della colonna chiave primaria in base alla tabella
+        if tabella == 'task':
+            nomeUser = 'id_task'
+        elif tabella == 'user':
+            nomeUser = 'id_user'
+        else:
+            raise ValueError("Tabella non supportata")
+    
+        # Prepara la query SQL per eliminare solo la riga con l'id specificato
+        query = f"DELETE FROM {tabella} WHERE {nomeUser} = ?;"
+    
+        # Esegui la query passando l'id della riga come parametro
+        db.execute(query, (idRiga,))
+        db.commit()
+    
+        print(f"Eseguendo query: {query} con valore: {idRiga} {nomeUser}")
+
+        
+
+         
 
         

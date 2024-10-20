@@ -43,17 +43,34 @@
             <p><span>Data:</span> {{ta[10]}}</p>
             <p><span>Ora:</span> {{ta[11]}}</p>
             <button class="open-popup" data-id="{{ta[0]}}">Modifica</button>
+            <form action="{{ url_for('cancellaTask', idR=ta[0]) }}" method="post">
+                <button type="submit" class="cancella">CANCELLA</button>
+            </form>
+
 
             <div class="popup" id="popupForm">
                 <div class="popup-content">
                     <span class="close-popup">&times;</span>
-                    <form action="{{(url_for('modifica_task', id=ta[0]))}} {{ ta[0] }}" method="post">
+                    <form action="{{(url_for('modificaTask', ida=ta[0]))}} {{ ta[0] }}" method="post">
                         <label for="titolo">Titolo:</label>
                         <input type="text" id="titolo" name="titolo" value="{{ ta[1] }}" required>
+
                         <label for="descrizione">Descrizione:</label>
                         <textarea id="descrizione" name="descrizione">{{ ta[2] }}</textarea>
+
                         <label for="priorita">Priorità:</label>
                         <input type="number" id="priorita" name="priorita" value="{{ ta[3] }}" required>
+
+                        <select name="assegnatoA" id="re" style="font-size: 16px; color: black; background-color: white; width:66%;">
+                            {% for ute in utenti %}
+                            <option value="{{ute[1]  }}" style="color:black">{{ute[2]  }} {{ute[6]  }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <label for="luogo">luogo svolgimento attività:</label>
+                        <input type="text" id="luogo" name="luogo" value="{{ ta[13] }}" required>
+
+
                         <button type="submit">Salva</button>
                     </form>
                 </div>
