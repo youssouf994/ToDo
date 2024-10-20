@@ -74,8 +74,12 @@ def accesso():
 
 @app.route('/home', methods=['POST', 'GET'])
 def home():
+    db=qDb.db()
+    utenti=qUsers.recuperaUtenti(db)
+    db.close()
     
-    return render_template('home.html')
+    return render_template('home.html', utenti=utenti)
+
 
 @app.route('/visualizzaTask/<stato>')
 def visualizzaTask(stato):
@@ -115,9 +119,12 @@ def aggiunta():
 
 @app.route('/aggiungiTasks', methods=['POST', 'GET'])
 def nuovoTask():
-    if request.method == 'POST':    
-        db=qDb.db()
+    db=qDb.db()
+    rep=qTask.recuperaRepartoUtente(db, session['userId'])
+    task=qTask.visualizzaTuttePerReparto(db, rep)
+    utenti=qUsers.recuperaUtenti(db)
     
+    if request.method == 'POST':        
         now = datetime.datetime.now()
     
         titolo=request.form['titolo']
@@ -130,14 +137,40 @@ def nuovoTask():
         ora=now.strftime('%H:%M:%S')
       
     qTask.aggiungiTask(db, titolo, descrizione, priorità, session['userId'], assegnatoA, stato, luogo, data, ora)
-    rep=qTask.recuperaRepartoUtente(db, session['userId'])
-    task=qTask.visualizzaTuttePerReparto(db, rep)
-    utenti=qUsers.recuperaUtenti(db)
+    
     
     db.close()
     
-    return render_template("aggiungiTask.html", task=task, utenti=utenti)
+    return render_template("home.html", task=task, utenti=utenti)
 
+@app.route('/modifica_task/<int:id>', methods=['GET', 'POST'])
+def modifica_task(ida):
+    db = qDb.db()  # Inizializza la connessione al database
+    nuovo = []  # Inizializza una lista vuota per i nuovi valori
+    
+    if request.method == 'POST':
+        # Recupera i dati inviati tramite POST
+        nuovo.append(request.form['titolo'])
+        nuovo.append(request.form['descrizione'])
+        nuovo.append(request.form['priorita'])
+        
+        # Definisci tabella e colonna (presumo tu abbia i nomi in variabili o li passi qui)
+        tabella = 'task'  # La tabella da aggiornare, ad esempio 'tasks'
+        colonna = 'titolo, descrizione, priorità'  # Le colonne che vuoi aggiornare
+
+        # Esegui la query di aggiornamento
+        qTask.modificaCampo(db, session['userId'], nuovo, tabella, colonna)
+        
+        db.close()  # Chiudi la connessione al database
+        return redirect(url_for(''))  # Redireziona dopo l'aggiornamento
+    
+    # Se il metodo è GET, mostra la task da modificare
+    cur = db.cursor()  # Ottieni un cursore per eseguire le query
+    cur.execute('SELECT * FROM tasks WHERE id = ?', (ida,))
+    task = cur.fetchone()
+    db.close()  # Chiudi la connessione al database
+    
+    return render_template('modifica_task.html', task=task)
 
 if __name__ == "__main__":
     # Run the app server on localhost:4449

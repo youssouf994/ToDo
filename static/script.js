@@ -158,3 +158,32 @@ function getRandomColor() {
     }
     return color;
 }
+
+$(document).ready(function () {
+    // Seleziona gli elementi pop-up e i pulsanti
+    const popup = $('#popupForm');  // Usa jQuery per selezionare l'elemento
+    const openPopupButtons = $('.open-popup');  // Seleziona tutti i pulsanti con la classe "open-popup"
+    const closePopup = $('.close-popup');  // Seleziona il bottone "X" per chiudere il pop-up
+
+    // Apre il pop-up quando si clicca il bottone "Modifica"
+    openPopupButtons.each(function () {
+        $(this).on('click', function () {
+            const taskId = $(this).data('id');  // Ottieni l'id della task dal data-id
+            // Inserisci il valore dinamico della task da modificare nel form se necessario
+            popup.css('display', 'flex');  // Mostra il pop-up
+        });
+    });
+
+    // Chiude il pop-up quando si clicca il pulsante "X"
+    closePopup.on('click', function () {
+        popup.css('display', 'none');  // Nasconde il pop-up
+    });
+
+    // Chiude il pop-up se si clicca al di fuori del contenuto
+    $(window).on('click', function (event) {
+        if ($(event.target).is(popup)) {
+            popup.css('display', 'none');  // Nasconde il pop-up se si clicca fuori
+        }
+    });
+});
+

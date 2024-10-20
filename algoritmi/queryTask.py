@@ -92,12 +92,19 @@ class qTask:
         db.commit()
     
 
-    def modificaCampo(db, idUser, nuovo, tabella, colonna, idVecchio):
-        # Costruire la query di aggiornamento in modo dinamico
-        query = (f"UPDATE {tabella} SET {colonna} = ? WHERE id_utente = ?", (colonna, idVecchio))
-
+    def modificaCampo(db, idUser, nuovo, tabella, colonna):
+       for colonna, nuovo in zip(colonna, nuovo):
+        # Costruire la query di aggiornamento
+        query = f"UPDATE {tabella} SET {colonna} = ? WHERE id_utente = ?;"
+        
+        # Debugging
+        print(f"Eseguendo query: {query} con valori: {(nuovo, idUser)}")
+        
         # Eseguire l'aggiornamento con parametri
-        db.execute(query, (nuovo, idUser, idVecchio))
+        db.execute(query, (nuovo, idUser,))
+    
+    # Commit della transazione dopo tutti gli aggiornamenti
         db.commit()
-        print(f"Campo {colonna} aggiornato correttamente in {tabella}.")
+        print(f"Tutti i campi aggiornati correttamente in {tabella}.")
+
         

@@ -27,6 +27,8 @@
 
     </div>
 
+    
+
     <!-- Contenuto principale -->
     <div class="main-content">
         <h2>Benvenuto nella Gestione Task</h2>
@@ -34,20 +36,61 @@
     </div>
 
     <div class="pannello1">
-        <div class="task">
-            {% for ta in task %}
-            <p>id:{{ta[0]}}</p>
-            <p>titolo:{{ta[1]}}</p>
-            <p>descrizione:{{ta[2]}}</p>
-            <p>priorit :{{ta[3]}}</p>
-            <p>inserito da:{{ta[4]}} {{ta[5]}}</p>
-            <p>assegnato a:{{ta[7]}} {{ta[8]}}</p>
-            <p>stato:{{ta[12]}}</p>
-            <p>luogo:{{ta[13]}}</p>
-            <p>data:{{ta[10]}}</p>
-            <p>ora:{{ta[11]}}</p>
-            {% endfor %}
+        <div class="inserisciTask">
+            <form action="{{(url_for('nuovoTask'))}}" method="post">
+                <div class="elementiTask">
+                    <label>Titolo</label>
+                    <input type="text" name="titolo" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>priorit </label>
+                    <input type="text" name="priorita" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>stato</label>
+                    <input type="text" name="stato" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label>luogo</label>
+                    <input type="text" name="luogo" required>
+                </div>
+
+                <div class="elementiTask">
+                    <label for="respCentro">utente da incaricare </label>
+                    <select name="assegnatoA" id="re" style="font-size: 16px; color: black; background-color: white; width:66%;">
+                        {% for ute in utenti %}
+                        <option value="{{ute[0]  }}" style="color:black">{{ute[2]  }} {{ute[6]  }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="elementiTask">
+                    <label>Descrizione</label>
+                    <input type="text" name="descrizione" required>
+                </div>
+
+                <input type="submit" value="inoltra task" />
+            </form>
         </div>
+        {% for ta in task %}
+        <div class="task">
+            <p><span>Id:</span> {{ta[0]}}</p>
+            <p><span>Titolo:</span> {{ta[1]}}</p>
+            <p><span>Descrizione:</span> {{ta[2]}}</p>
+            <p><span>Priorit :</span> {{ta[3]}}</p>
+            <p><span>Inserito da:</span> {{ta[4]}} {{ta[5]}}</p>
+            <p><span>Assegnato a:</span> {{ta[7]}} {{ta[8]}}</p>
+            <p><span>Stato:</span> {{ta[12]}}</p>
+            <p><span>Luogo:</span> {{ta[13]}}</p>
+            <p><span>Data:</span> {{ta[10]}}</p>
+            <p><span>Ora:</span> {{ta[11]}}</p>
+        </div>
+        {% endfor %}
+
     </div>
 
     <!-- Bootstrap JS e dipendenze -->

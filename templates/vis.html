@@ -7,20 +7,58 @@
 </head>
 
 <body class="body">
-    <div class="pannello1">
-        <div class="task">
-            {% for ta in task %}
-                <p>id:{{ta[0]}}</p>
-                <p>titolo:{{ta[1]}}</p>
-                <p>descrizione:{{ta[2]}}</p>
-                <p>priorità:{{ta[3]}}</p>
-                <p>inserito da:{{ta[4]}} {{ta[5]}}</p>
-                <p>assegnato a:{{ta[7]}} {{ta[8]}}</p>
-                <p>stato:{{ta[12]}}</p>
-                <p>luogo:{{ta[13]}}</p>
-                <p>data:{{ta[10]}}</p>
-                <p>ora:{{ta[11]}}</p>
-            {% endfor %}
+
+    <div class="sidebar">
+        <a href="{{ (url_for('aggiunta')) }}">Aggiungi Task</a>
+
+        <div class="side1">
+            <h4 class="text-center">Gestione Task da lavorare</h4>
+            <a href="{{ url_for('visualizzaTask', stato='da_fareB') }}">Da Fare</a>
+            <a href="{{ url_for('visualizzaTask', stato='in_sospesoB') }}">In Sospeso</a>
+            <a href="{{ url_for('visualizzaTask', stato='chiuseB') }}">Chiuse</a>
         </div>
+
+        <div class="side2">
+            <h4 class="text-center">Gestione Task assegnate da me</h4>
+            <a href="{{ url_for('visualizzaTask', stato='da_fare') }}">Da Fare</a>
+            <a href="{{ url_for('visualizzaTask', stato='in_sospeso') }}">In Sospeso</a>
+            <a href="{{ url_for('visualizzaTask', stato='chiuse') }}">Chiuse</a>
+        </div>
+
+
     </div>
+
+    <div class="pannello1">
+
+        {% for ta in task %}
+        <div class="task">
+            <p><span>Id:</span> {{ta[0]}}</p>
+            <p><span>Titolo:</span> {{ta[1]}}</p>
+            <p><span>Descrizione:</span> {{ta[2]}}</p>
+            <p><span>Priorità:</span> {{ta[3]}}</p>
+            <p><span>Inserito da:</span> {{ta[4]}} {{ta[5]}}</p>
+            <p><span>Assegnato a:</span> {{ta[7]}} {{ta[8]}}</p>
+            <p><span>Stato:</span> {{ta[12]}}</p>
+            <p><span>Luogo:</span> {{ta[13]}}</p>
+            <p><span>Data:</span> {{ta[10]}}</p>
+            <p><span>Ora:</span> {{ta[11]}}</p>
+            <button class="open-popup" data-id="{{ta[0]}}">Modifica</button>
+
+            <div class="popup" id="popupForm">
+                <div class="popup-content">
+                    <span class="close-popup">&times;</span>
+                    <form action="{{(url_for('modifica_task', id=ta[0]))}} {{ ta[0] }}" method="post">
+                        <label for="titolo">Titolo:</label>
+                        <input type="text" id="titolo" name="titolo" value="{{ ta[1] }}" required>
+                        <label for="descrizione">Descrizione:</label>
+                        <textarea id="descrizione" name="descrizione">{{ ta[2] }}</textarea>
+                        <label for="priorita">Priorità:</label>
+                        <input type="number" id="priorita" name="priorita" value="{{ ta[3] }}" required>
+                        <button type="submit">Salva</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+       {% endfor %}
+        
 </body>
