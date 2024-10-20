@@ -95,7 +95,7 @@ class qTask:
     def modificaCampo(db, idUser, nuovo, tabella, colonna):
        for colonna, nuovo in zip(colonna, nuovo):
         # Costruire la query di aggiornamento
-        query = f"UPDATE {tabella} SET {colonna} = ? WHERE id_utente = ?;"
+        query = f"UPDATE {tabella} SET {colonna} = ? WHERE id_utente = ?;" 
         
         # Debugging
         print(f"Eseguendo query: {query} con valori: {(nuovo, idUser)}")
